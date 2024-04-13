@@ -1,11 +1,5 @@
 use super::Assembler;
 
-/// Represents the size of the data segment.
-const ABSOLUTE_MAXIMUM: usize = 8192;
-
-/// Represents the maximum length of a shell command.
-const PREFFERED_MAXIMUM: usize = 8148;
-
 /// Represents the following assembly code:
 ///
 /// ```assembly
@@ -23,16 +17,14 @@ const PREFFERED_MAXIMUM: usize = 8148;
 ///     call [ExitProcess]
 ///
 /// section '.idata' import data readable writeable
-///   library kernel32, 'KERNEL32.DLL',\
-///           msvcrt, 'MSVCRT.DLL'
+///     library kernel32, 'KERNEL32.DLL',\
+///             msvcrt, 'MSVCRT.DLL'
 ///
-///   import kernel32, \
-///          ExitProcess, 'ExitProcess'
+///     import kernel32, \
+///            ExitProcess, 'ExitProcess'
 ///
-///   import msvcrt, \
-///          system, 'system'
-///
-/// section '.data' data readable writeable
+///     import msvcrt, \
+///            system, 'system'
 /// ```
 const EXECUTABLE: [u8; 1536] = [
     0x4D, 0x5A, 0x80, 0x00, 0x01, 0x00, 0x00, 0x00, 0x04, 0x00, 0x10, 0x00, 0xFF, 0xFF, 0x00, 0x00,
@@ -140,7 +132,7 @@ impl Assembler for WindowsAssembler {
     fn assemble(source: String) -> crate::result::Result<Vec<u8>> {
         let length = source.len();
 
-        if length > PREFFERED_MAXIMUM {
+        if length > super::PREFFERED_MAXIMUM {
             return Err(crate::result::Error::TooLong);
         }
 
@@ -150,7 +142,7 @@ impl Assembler for WindowsAssembler {
         binary.extend(data);
 
         // Add padding zeros to the binary vector to reach the absolute maximum size
-        binary.extend(std::iter::repeat(0).take(ABSOLUTE_MAXIMUM - length));
+        binary.extend(std::iter::repeat(0).take(super::ABSOLUTE_MAXIMUM - length));
 
         Ok(binary)
     }

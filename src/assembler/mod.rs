@@ -1,18 +1,17 @@
-/// This module contains functionality for Windows-specific assembly.
-///
-/// It provides utilities for assembling source code into machine code
-/// compatible with the Windows operating system.
-///
-/// ```no_run
-/// let shell_code = "echo hello!".to_string();
-/// let executable = WindowsAssembler::assemble(shell_code).unwrap();
-/// ```
+/// This module contains Windows-specific functionalities.
 pub mod windows;
 
+/// This module contains Linux-specific functionalities.
+pub mod linux;
+
+/// Represents the size of the data segment.
+pub(super) const ABSOLUTE_MAXIMUM: usize = 8192;
+
+/// Represents the maximum length of a shell command.
+pub(super) const PREFFERED_MAXIMUM: usize = 8148;
+
 /// This trait is designed to provide a common interface for different
-/// types of assemblers. While currently focused on Windows-specific
-/// assembly, it is designed with extensibility in mind, allowing
-/// for potential support of other platforms such as Linux in the future.
+/// types of assemblers.
 pub trait Assembler {
     /// Assembles the provided source code into executable machine code.
     fn assemble(source: String) -> crate::result::Result<Vec<u8>>;
