@@ -1,6 +1,6 @@
 [package]
 name = "shellbin"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 description = "Ship your shell script as executable binary"
@@ -8,6 +8,6 @@ repository = "https://github.com/bunopnu/shellbin"
 authors = ["bunopnu <lib@bun.rip>"]
 
 [dependencies]
-anyhow = "1.0.82"
-clap = { version = "4.5.4", features = ["derive"] }
-thiserror = "1.0.58"
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+thiserror = "1"

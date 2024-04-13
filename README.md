@@ -4,7 +4,7 @@ Ship your shell script as executable binary!
 
 ## Output
 
-This tool doesn't need additional tools like compilers or assemblers to generate a binary.
+This tool doesn't need additional tools like compilers or assemblers to generate a binary. **Please note that generated binaries are for amd64 architecture.**
 
 ### Windows
 
