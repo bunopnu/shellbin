@@ -24,7 +24,7 @@ const PREFFERED_MAXIMUM: usize = 8148;
 ///
 /// section '.idata' import data readable writeable
 ///   library kernel32, 'KERNEL32.DLL',\
-///             msvcrt, 'MSVCRT.DLL'
+///           msvcrt, 'MSVCRT.DLL'
 ///
 ///   import kernel32, \
 ///          ExitProcess, 'ExitProcess'
@@ -137,11 +137,11 @@ const EXECUTABLE: [u8; 1536] = [
 pub struct WindowsAssembler;
 
 impl Assembler for WindowsAssembler {
-    fn assemble(source: String) -> Result<Vec<u8>, super::Error> {
+    fn assemble(source: String) -> crate::result::Result<Vec<u8>> {
         let length = source.len();
 
         if length > PREFFERED_MAXIMUM {
-            return Err(super::Error::TooLong);
+            return Err(crate::result::Error::TooLong);
         }
 
         let data = source.as_bytes().to_vec();
