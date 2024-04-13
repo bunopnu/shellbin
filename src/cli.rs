@@ -1,5 +1,5 @@
 use clap::command;
-use std::path::PathBuf;
+use std::{path::PathBuf, str::FromStr};
 
 pub use clap::Parser;
 
@@ -17,4 +17,27 @@ pub struct Args {
     /// Sets the output file path.
     #[clap(short, long, default_value = "output.exe")]
     pub output: PathBuf,
+
+    /// Sets the target platform.
+    #[clap(short, long)]
+    pub target: Targets,
+}
+
+/// Represents supported target platforms.
+#[derive(Clone, Copy)]
+pub enum Targets {
+    Windows,
+    Linux,
+}
+
+impl FromStr for Targets {
+    type Err = crate::result::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "windows" => Ok(Targets::Windows),
+            "linux" => Ok(Targets::Linux),
+            _ => Err(crate::result::Error::UnknownPlatform),
+        }
+    }
 }

@@ -1,7 +1,7 @@
 use std::io::{Read, Write};
 
 use anyhow::Context;
-use assembler::{windows::WindowsAssembler, Assembler};
+use assembler::{linux::LinuxAssembler, windows::WindowsAssembler, Assembler};
 use cli::Parser;
 
 /// This module contains functionality related to generating executable binary.
@@ -23,14 +23,17 @@ fn main() -> anyhow::Result<()> {
         }
     };
 
-    let binary = WindowsAssembler::assemble(script)?;
+    // Assemble script into a binary executable based on the specified target platform
+    let binary = match opts.target {
+        cli::Targets::Windows => WindowsAssembler::assemble(script),
+        cli::Targets::Linux => LinuxAssembler::assemble(script),
+    }?;
 
     // Write binary to the output file
     let mut file = std::fs::File::create(&opts.output)?;
     file.write_all(&binary)?;
 
     println!("Wrote {} bytes to: {}", binary.len(), opts.output.display());
-
     Ok(())
 }
 

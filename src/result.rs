@@ -10,4 +10,6 @@ pub enum Error {
     TooLong,
     #[error("Unable to find source code")]
     NotFound,
+    #[error("Unknown platform")]
+    UnknownPlatform,
 }
