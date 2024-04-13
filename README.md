@@ -1,6 +1,6 @@
 # ShellBin
 
-Ship your shell script as executable binary.
+Ship your shell script as executable binary!
 
 This tool does not require any other tools such as a compiler or an assembler to generate a binary. The generated binary simply invokes the `system` function, which executes the specified shell script. It allows executing shell commands from within a program. It's important to note that the length of the shell script provided to this tool is limited to **8148** characters and this tool **only supports Microsoft Windows**.
 
