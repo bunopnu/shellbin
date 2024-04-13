@@ -1,0 +1,39 @@
+name: Build app
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: shellbin-${{ hashFiles('**/Cargo.lock') }}-deps
+
+      - name: Run cargo clippy
+        continue-on-error: true
+        run: cargo clippy --no-deps -- -Dwarnings
+
+      - name: Run cargo fmt
+        continue-on-error: true
+        run: cargo fmt --check
+
+      - name: Build project
+        run: cargo build --verbose
