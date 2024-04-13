@@ -2,33 +2,52 @@
 
 Ship your shell script as executable binary!
 
-This tool does not require any other tools such as a compiler or an assembler to generate a binary. The generated binary simply invokes the `system` function, which executes the specified shell script. It allows executing shell commands from within a program. It's important to note that the length of the shell script provided to this tool is limited to **8148** characters and this tool **only supports Microsoft Windows**.
+## Output
 
-## Options
+This tool doesn't need additional tools like compilers or assemblers to generate a binary.
 
-- `-s, --script <SCRIPT>`: Sets the shell script to assembly
-- `-f, --file <FILE>`: Sets the input file containing the shell script
-- `-o, --output <OUTPUT>`: Sets the output file path (default: "output.exe")
+### Windows
+
+The generated binary invokes the `system` function to execute the specified script. **Keep in mind that some anti-malware software may flag binaries due to this behavior.**
+
+### Linux
+
+The generated binary uses the `execve` syscall to execute the specified shell script.
 
 ## Example
 
+> Note that you can cross-compile your script, allowing you to compile a Bash script for Linux while using Windows, for example.
+
+### Windows
+
 ```
-$ shellbin -s "echo testing out! && ping bun.rip" -o out.exe
-Wrote 9728 bytes to: out.exe
+$ shellbin -s "echo testing for windows! && ping bun.rip" -o output.exe -t windows
+Wrote 9728 bytes to: output.exe
 
-$.\out.exe
-testing out!
+$ .\output.exe
+testing for windows!
 
-Pinging bun.rip [172.67.144.227] with 32 bytes of data:
-Reply from 172.67.144.227: bytes=32 time=65ms TTL=48
-Reply from 172.67.144.227: bytes=32 time=63ms TTL=48
-Reply from 172.67.144.227: bytes=32 time=63ms TTL=48
-Reply from 172.67.144.227: bytes=32 time=98ms TTL=48
+Pinging bun.rip [104.21.28.78] with 32 bytes of data:
+Reply from 104.21.28.78: bytes=32 time=64ms TTL=48
+Reply from 104.21.28.78: bytes=32 time=66ms TTL=48
+Reply from 104.21.28.78: bytes=32 time=70ms TTL=48
+Reply from 104.21.28.78: bytes=32 time=63ms TTL=48
 
-Ping statistics for 172.67.144.227:
+Ping statistics for 104.21.28.78:
     Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
 Approximate round trip times in milli-seconds:
-    Minimum = 63ms, Maximum = 98ms, Average = 72ms
+    Minimum = 63ms, Maximum = 70ms, Average = 65ms
+```
+
+### Linux
+
+```
+$ shellbin -s "echo testing for linux! && dir" -o output -t linux
+Wrote 288 bytes to: output
+
+$ ./output
+testing for linux!
+Cargo.lock  Cargo.toml  LICENSE  README.md  output  src  target  testing
 ```
 
 ## License
