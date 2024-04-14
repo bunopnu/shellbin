@@ -1,6 +1,6 @@
 [package]
 name = "shellbin"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license = "MIT"
 description = "Ship your shell script as executable binary"
