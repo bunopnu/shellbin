@@ -1,17 +1,8 @@
 /// This module contains Windows-specific functionalities.
 pub mod windows;
 
-/// This module contains Linux-specific functionalities (amd64).
-pub mod linux_amd64;
-
-/// This module contains Linux-specific functionalities (x86).
-pub mod linux_x86;
-
-/// Represents the size of the data segment.
-pub(super) const ABSOLUTE_MAXIMUM: usize = 8192;
-
-/// Represents the maximum length of a shell command.
-pub(super) const PREFFERED_MAXIMUM: usize = 8148;
+/// This module contains Linux-specific functionalities.
+pub mod linux;
 
 /// This trait is designed to provide a common interface for different
 /// types of assemblers.

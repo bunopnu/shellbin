@@ -1,4 +1,4 @@
-use super::Assembler;
+use crate::assembler::Assembler;
 
 /// Represents the following assembly code:
 ///
@@ -32,21 +32,15 @@ const EXECUTABLE: [u8; 173] = [
     0x00, 0x00, 0x2F, 0x62, 0x69, 0x6E, 0x2F, 0x73, 0x68, 0x00, 0x2D, 0x63, 0x00,
 ];
 
-/// A struct representing a Linux-specific (x86) assembler.
-pub struct LinuxX86Assembler;
+/// A struct representing a Linux-specific (i386) assembler.
+pub struct LinuxAssembler;
 
-impl Assembler for LinuxX86Assembler {
+impl Assembler for LinuxAssembler {
     fn assemble(source: String) -> crate::result::Result<Vec<u8>> {
-        let length = source.len();
+        let mut binary = Vec::with_capacity(EXECUTABLE.len() + source.len() + 1);
 
-        if length > super::PREFFERED_MAXIMUM {
-            return Err(crate::result::Error::TooLong);
-        }
-
-        let data = source.as_bytes().to_vec();
-
-        let mut binary = EXECUTABLE.to_vec();
-        binary.extend(data);
+        binary.extend_from_slice(&EXECUTABLE);
+        binary.extend(source.bytes());
         binary.push(0);
 
         Ok(binary)

@@ -26,9 +26,11 @@ pub struct Args {
 /// Represents supported target platforms.
 #[derive(Clone, Copy)]
 pub enum Targets {
+    // Windows targets:
     Windows,
+    // Linux targets:
     LinuxAMD64,
-    LinuxX86,
+    LinuxI386,
 }
 
 impl FromStr for Targets {
@@ -38,7 +40,7 @@ impl FromStr for Targets {
         match s {
             "windows" => Ok(Targets::Windows),
             "linux-amd64" => Ok(Targets::LinuxAMD64),
-            "linux-x86" => Ok(Targets::LinuxX86),
+            "linux-i386" => Ok(Targets::LinuxI386),
             _ => Err(crate::result::Error::UnknownPlatform),
         }
     }

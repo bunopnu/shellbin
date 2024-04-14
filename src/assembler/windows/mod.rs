@@ -1,4 +1,7 @@
-use super::Assembler;
+use crate::assembler::Assembler;
+
+/// Represents the size of generated binary.
+const BINARY_SIZE: usize = 9728;
 
 /// Represents the following assembly code:
 ///
@@ -130,19 +133,13 @@ pub struct WindowsAssembler;
 
 impl Assembler for WindowsAssembler {
     fn assemble(source: String) -> crate::result::Result<Vec<u8>> {
-        let length = source.len();
+        let mut binary = Vec::with_capacity(BINARY_SIZE);
+        binary.extend_from_slice(&EXECUTABLE);
+        binary.extend(source.bytes());
 
-        if length > super::PREFFERED_MAXIMUM {
-            return Err(crate::result::Error::TooLong);
-        }
-
-        let data = source.as_bytes().to_vec();
-
-        let mut binary = EXECUTABLE.to_vec();
-        binary.extend(data);
-
-        // Add padding zeros to the binary vector to reach the absolute maximum size
-        binary.extend(std::iter::repeat(0).take(super::ABSOLUTE_MAXIMUM - length));
+        // Calculate the number of padding zeros needed to reach the specified binary size
+        let padding_zeros = BINARY_SIZE - source.len() - EXECUTABLE.len();
+        binary.extend(vec![0; padding_zeros]);
 
         Ok(binary)
     }

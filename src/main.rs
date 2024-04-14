@@ -4,6 +4,9 @@ use anyhow::Context;
 use assembler::Assembler;
 use cli::Parser;
 
+/// Represents the maximum length of a shell command.
+pub const SCRIPT_MAXIMUM_LENGTH: usize = 8148;
+
 /// This module contains functionality related to generating executable binary.
 mod assembler;
 /// This module contains the definition of CLI options.
@@ -23,11 +26,15 @@ fn main() -> anyhow::Result<()> {
         }
     };
 
+    if script.len() > SCRIPT_MAXIMUM_LENGTH {
+        return Err(crate::result::Error::TooLong.into());
+    }
+
     // Assemble script into a binary executable based on the specified target platform
     let binary = match opts.target {
         cli::Targets::Windows => assembler::windows::WindowsAssembler::assemble(script),
-        cli::Targets::LinuxAMD64 => assembler::linux_amd64::LinuxAMD64Assembler::assemble(script),
-        cli::Targets::LinuxX86 => assembler::linux_x86::LinuxX86Assembler::assemble(script),
+        cli::Targets::LinuxAMD64 => assembler::linux::amd64::LinuxAssembler::assemble(script),
+        cli::Targets::LinuxI386 => assembler::linux::i386::LinuxAssembler::assemble(script),
     }?;
 
     // Write binary to the output file
