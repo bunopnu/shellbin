@@ -38,10 +38,10 @@ const EXECUTABLE: [u8; 257] = [
     0x00,
 ];
 
-/// A struct representing a Linux-specific assembler.
-pub struct LinuxAssembler;
+/// A struct representing a Linux-specific (amd64) assembler.
+pub struct LinuxAMD64Assembler;
 
-impl Assembler for LinuxAssembler {
+impl Assembler for LinuxAMD64Assembler {
     fn assemble(source: String) -> crate::result::Result<Vec<u8>> {
         let length = source.len();
 

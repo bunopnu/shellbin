@@ -27,7 +27,8 @@ pub struct Args {
 #[derive(Clone, Copy)]
 pub enum Targets {
     Windows,
-    Linux,
+    LinuxAMD64,
+    LinuxX86,
 }
 
 impl FromStr for Targets {
@@ -36,7 +37,8 @@ impl FromStr for Targets {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "windows" => Ok(Targets::Windows),
-            "linux" => Ok(Targets::Linux),
+            "linux-amd64" => Ok(Targets::LinuxAMD64),
+            "linux-x86" => Ok(Targets::LinuxX86),
             _ => Err(crate::result::Error::UnknownPlatform),
         }
     }

@@ -1,8 +1,11 @@
 /// This module contains Windows-specific functionalities.
 pub mod windows;
 
-/// This module contains Linux-specific functionalities.
-pub mod linux;
+/// This module contains Linux-specific functionalities (amd64).
+pub mod linux_amd64;
+
+/// This module contains Linux-specific functionalities (x86).
+pub mod linux_x86;
 
 /// Represents the size of the data segment.
 pub(super) const ABSOLUTE_MAXIMUM: usize = 8192;

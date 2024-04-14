@@ -1,7 +1,7 @@
 use std::io::{Read, Write};
 
 use anyhow::Context;
-use assembler::{linux::LinuxAssembler, windows::WindowsAssembler, Assembler};
+use assembler::Assembler;
 use cli::Parser;
 
 /// This module contains functionality related to generating executable binary.
@@ -25,8 +25,9 @@ fn main() -> anyhow::Result<()> {
 
     // Assemble script into a binary executable based on the specified target platform
     let binary = match opts.target {
-        cli::Targets::Windows => WindowsAssembler::assemble(script),
-        cli::Targets::Linux => LinuxAssembler::assemble(script),
+        cli::Targets::Windows => assembler::windows::WindowsAssembler::assemble(script),
+        cli::Targets::LinuxAMD64 => assembler::linux_amd64::LinuxAMD64Assembler::assemble(script),
+        cli::Targets::LinuxX86 => assembler::linux_x86::LinuxX86Assembler::assemble(script),
     }?;
 
     // Write binary to the output file
