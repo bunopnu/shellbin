@@ -4,7 +4,7 @@ Ship your shell script as executable binary!
 
 ## Output
 
-This tool doesn't need additional tools like compilers or assemblers to generate a binary. **Please note that generated binaries are for amd64 architecture.**
+This tool doesn't need additional tools like compilers or assemblers to generate a binary.
 
 ### Windows
 
@@ -12,7 +12,7 @@ The generated binary invokes the `system` function to execute the specified scri
 
 ### Linux
 
-The generated binary uses the `execve` syscall to execute the specified shell script.
+The generated binary uses the `execve` syscall to execute the specified shell script, calling `/bin/bash` to run the script.
 
 ## Example
 
@@ -42,7 +42,7 @@ Approximate round trip times in milli-seconds:
 ### Linux
 
 ```
-$ shellbin -s "echo testing for linux! && dir" -o output -t linux
+$ shellbin -s "echo testing for linux! && dir" -o output -t linux-amd64
 Wrote 288 bytes to: output
 
 $ ./output
