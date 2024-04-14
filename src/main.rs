@@ -1,6 +1,5 @@
 use std::io::{Read, Write};
 
-use anyhow::Context;
 use assembler::Assembler;
 use cli::Parser;
 
@@ -17,6 +16,7 @@ mod result;
 fn main() -> anyhow::Result<()> {
     let opts = cli::Args::parse();
 
+    // Read script to assemble
     let script = match opts.script {
         Some(script) => script,
         None => {
@@ -26,22 +26,42 @@ fn main() -> anyhow::Result<()> {
         }
     };
 
+    // Check script length
     if script.len() > SCRIPT_MAXIMUM_LENGTH {
         return Err(crate::result::Error::TooLong.into());
     }
 
     // Assemble script into a binary executable based on the specified target platform
-    let binary = match opts.target {
+    let binary = assemble_binary(opts.target, script)?;
+
+    // Write binary to the output file
+    write_binary_to_file(&opts.output, &binary)?;
+
+    Ok(())
+}
+
+/// Runs the assembler.
+fn assemble_binary(target: cli::Targets, script: String) -> anyhow::Result<Vec<u8>> {
+    let binary = match target {
         cli::Targets::Windows => assembler::windows::WindowsAssembler::assemble(script),
         cli::Targets::LinuxAMD64 => assembler::linux::amd64::LinuxAssembler::assemble(script),
         cli::Targets::LinuxI386 => assembler::linux::i386::LinuxAssembler::assemble(script),
     }?;
 
-    // Write binary to the output file
-    let mut file = std::fs::File::create(&opts.output)?;
-    file.write_all(&binary)?;
+    Ok(binary)
+}
 
-    println!("Wrote {} bytes to: {}", binary.len(), opts.output.display());
+/// Writes binary to a file.
+fn write_binary_to_file(output_path: &std::path::PathBuf, binary: &Vec<u8>) -> anyhow::Result<()> {
+    let mut file = std::fs::File::create(output_path)?;
+    file.write_all(binary)?;
+
+    println!(
+        "Successfully wrote {} bytes to: {}",
+        binary.len(),
+        output_path.display()
+    );
+
     Ok(())
 }
 
@@ -49,10 +69,10 @@ fn main() -> anyhow::Result<()> {
 fn read_script_from_file(file_path: &Option<std::path::PathBuf>) -> anyhow::Result<Option<String>> {
     match file_path {
         Some(path) => {
-            let mut file = std::fs::File::open(path).context("Failed to open input file")?;
+            let mut file = std::fs::File::open(path)?;
+
             let mut script = String::new();
-            file.read_to_string(&mut script)
-                .context("Failed to read from input file")?;
+            file.read_to_string(&mut script)?;
 
             Ok(Some(script))
         }
