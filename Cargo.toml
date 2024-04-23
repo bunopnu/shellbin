@@ -11,3 +11,6 @@ authors = ["bunopnu <lib@bun.rip>"]
 anyhow = "1"
 clap = { version = "4", features = ["derive"] }
 thiserror = "1"
+
+[build-dependencies]
+toml = "0.8"

@@ -4,7 +4,7 @@ use assembler::Assembler;
 use cli::Parser;
 
 /// Represents the maximum length of a shell command.
-pub const SCRIPT_MAXIMUM_LENGTH: usize = 8148;
+pub const SCRIPT_MAXIMUM_LENGTH: usize = 7168;
 
 /// This module contains functionality related to generating executable binary.
 mod assembler;

@@ -22,7 +22,7 @@ The generated binary uses the `execve` syscall to execute the specified shell sc
 
 ```
 $ shellbin -s "echo testing for windows! && ping bun.rip" -o output.exe -t windows
-Wrote 9728 bytes to: output.exe
+Successfully wrote 9728 bytes to: output.exe
 
 $ .\output.exe
 testing for windows!
@@ -43,7 +43,7 @@ Approximate round trip times in milli-seconds:
 
 ```
 $ shellbin -s "echo testing for linux! && dir" -o output -t linux-amd64
-Wrote 288 bytes to: output
+Successfully wrote 288 bytes to: output
 
 $ ./output
 testing for linux!

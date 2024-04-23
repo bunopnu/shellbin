@@ -20,6 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up FASM
+        uses: stevenwdv/setup-fasm@v1.4.1
+        with:
+          edition: fasm1
+
       - name: Compile and release
         uses: rust-build/rust-build.action@v1.4.5
         env:
