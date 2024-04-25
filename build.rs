@@ -1,9 +1,7 @@
 use std::env;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
-
-use toml;
 
 type TemplateDataTable = std::collections::HashMap<String, usize>;
 
@@ -16,7 +14,7 @@ fn main() {
     let binaries_path = PathBuf::from(&current_path).join("tbin");
 
     // Create the directory if it doesn't exist
-    if let Ok(false) = binaries_path.try_exists() {
+    if matches!(binaries_path.try_exists(), Ok(false)) {
         fs::create_dir(&binaries_path).expect("Failed to create 'tbin' folder");
     }
 
@@ -39,16 +37,16 @@ fn main() {
 }
 
 /// Function to read the template data table from 'bytes.toml'.
-fn read_template_data_table(templates_path: &PathBuf) -> TemplateDataTable {
+fn read_template_data_table(templates_path: &Path) -> TemplateDataTable {
     let template_bytes_path = templates_path.join("bytes.toml");
     let template_bytes_data =
-        fs::read_to_string(&template_bytes_path).expect("Failed to read 'bytes.toml'");
+        fs::read_to_string(template_bytes_path).expect("Failed to read 'bytes.toml'");
 
     toml::from_str(&template_bytes_data).expect("Failed to parse 'bytes.toml'")
 }
 
 /// Function to run the FASM to assemble source file.
-fn run_flat_assembler(source_path: &PathBuf, output_path: &PathBuf) {
+fn run_flat_assembler(source_path: &Path, output_path: &Path) {
     Command::new("fasm")
         .args([source_path.as_os_str(), output_path.as_os_str()])
         .output()

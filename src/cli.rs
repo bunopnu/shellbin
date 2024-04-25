@@ -38,9 +38,9 @@ impl FromStr for Targets {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "windows" => Ok(Targets::Windows),
-            "linux-amd64" => Ok(Targets::LinuxAMD64),
-            "linux-i386" => Ok(Targets::LinuxI386),
+            "windows" => Ok(Self::Windows),
+            "linux-amd64" => Ok(Self::LinuxAMD64),
+            "linux-i386" => Ok(Self::LinuxI386),
             _ => Err(crate::result::Error::UnknownPlatform),
         }
     }

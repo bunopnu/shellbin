@@ -1,4 +1,4 @@
-name: Build and test app
+name: Build Application
 
 on:
   push:
@@ -36,12 +36,7 @@ jobs:
         run: cargo build --verbose
 
       - name: Run cargo clippy
-        continue-on-error: true
-        run: cargo clippy --no-deps -- -Dwarnings
+        run: cargo clippy -- -W clippy::nursery -Dwarnings
 
       - name: Run cargo fmt
-        continue-on-error: true
         run: cargo fmt --check
-
-      - name: Run project
-        run: cargo run -- -s "echo wow && rm myself" -o myself -t linux-i386

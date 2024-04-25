@@ -52,7 +52,7 @@ fn assemble_binary(target: cli::Targets, script: String) -> anyhow::Result<Vec<u
 }
 
 /// Writes binary to a file.
-fn write_binary_to_file(output_path: &std::path::PathBuf, binary: &Vec<u8>) -> anyhow::Result<()> {
+fn write_binary_to_file(output_path: &std::path::PathBuf, binary: &[u8]) -> anyhow::Result<()> {
     let mut file = std::fs::File::create(output_path)?;
     file.write_all(binary)?;
 
