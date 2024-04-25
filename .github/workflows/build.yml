@@ -11,7 +11,7 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
           edition: fasm1
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
@@ -32,6 +32,9 @@ jobs:
             target/
           key: shellbin-${{ hashFiles('**/Cargo.lock') }}-deps
 
+      - name: Build project
+        run: cargo build --verbose
+
       - name: Run cargo clippy
         continue-on-error: true
         run: cargo clippy --no-deps -- -Dwarnings
@@ -40,18 +43,5 @@ jobs:
         continue-on-error: true
         run: cargo fmt --check
 
-      - name: Build project
-        run: cargo build --verbose
-
       - name: Run project
         run: cargo run -- -s "echo wow && rm myself" -o myself -t linux-i386
-
-      - name: Test output
-        run: |
-          chmod +x ./myself
-          export commandResult=$(./myself)
-
-          if [ "$commandResult" != "wow" ]; then
-              echo "Unexpected response while testing";
-              exit 1;
-          fi

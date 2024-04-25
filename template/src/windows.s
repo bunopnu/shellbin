@@ -1,7 +1,7 @@
 format PE console
 entry start
 
-include 'win32a.inc'
+include '%inc%/win32a.inc'
 
 section '.code' code readable executable
 start:
