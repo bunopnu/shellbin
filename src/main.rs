@@ -10,6 +10,8 @@ pub const SCRIPT_MAXIMUM_LENGTH: usize = 7168;
 mod assembler;
 /// This module contains the definition of CLI options.
 mod cli;
+/// This module contains encoding utilities.
+mod encode;
 /// This module contains custom error types for the application.
 mod result;
 
